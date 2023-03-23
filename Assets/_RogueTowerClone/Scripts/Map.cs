@@ -61,6 +61,7 @@ public class Map : MonoBehaviour
         SpawnButtons();
     }
     
+    // ToDo: Keep a list of all valid End points, this only checks the last placed block
     private void SpawnButtons()
     {
         // Remove old buttons
