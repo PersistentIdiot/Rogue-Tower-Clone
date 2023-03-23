@@ -27,7 +27,7 @@ public class Map : MonoBehaviour
         SpawnButtons();
     }
 
-    public void SpawnNewBlock()
+    public void SpawnNewBlock(int endPoint = 0)
     {
         // Instantiate new block, add to list, name it
         var newBlock = Instantiate(blockPrefabs.GetRandomElement(), transform);
@@ -35,14 +35,15 @@ public class Map : MonoBehaviour
         newBlock.gameObject.name = $"Block {blocks.Count}";
 
         // Move it into the correct position
-        Vector3 direction = (lastBlock.end.position - lastBlock.transform.position).normalized;
+        Vector3 direction = (lastBlock.endPoints[endPoint].position - lastBlock.transform.position).normalized;
         newBlock.transform.position = lastBlock.transform.position + direction * 11;
+
 
 
         // Orient new block ( via Nom - https://discord.com/channels/750329891383410728/983851080255418408/1088325758050648134 )
         newBlock.transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
-        var forwardFrom = newBlock.toStart;
-        var forwardTo = -lastBlock.toEnd;
+        var forwardFrom = newBlock.transform.TransformDirection(newBlock.start.localPosition);
+        var forwardTo = -lastBlock.transform.TransformDirection(lastBlock.endPoints[endPoint].localPosition);
         var rotation = Quaternion.FromToRotation(forwardFrom, forwardTo);
         newBlock.transform.rotation *= rotation;
 
@@ -64,15 +65,20 @@ public class Map : MonoBehaviour
         {
             Destroy(spawnTileButtons[i].gameObject);
         }
-        spawnTileButtons.Clear();
-        
-        // Spawn new buttons
-        Vector3 direction = (lastBlock.end.position - lastBlock.transform.position).normalized;
-        var buttonPosition = lastBlock.transform.position + direction * 11+ new Vector3(0,5,0);
 
-        var newButton = Instantiate(buttonPrefab, canvas);
-        spawnTileButtons.Add(newButton);
-        newButton.transform.position = buttonPosition;
-        newButton.onClick.AddListener(SpawnNewBlock);
+        spawnTileButtons.Clear();
+
+        for (int i = 0; i < lastBlock.endPoints.Count; i++)
+        {
+            // Spawn new buttons
+            Vector3 direction = (lastBlock.endPoints[i].position - lastBlock.transform.position).normalized;
+            var buttonPosition = lastBlock.transform.position + direction * 11 + new Vector3(0, 5, 0);
+
+            var newButton = Instantiate(buttonPrefab, canvas);
+            spawnTileButtons.Add(newButton);
+            newButton.transform.position = buttonPosition;
+            int endPoint = i;
+            newButton.onClick.AddListener(() => SpawnNewBlock(endPoint));
+        }
     }
 }
