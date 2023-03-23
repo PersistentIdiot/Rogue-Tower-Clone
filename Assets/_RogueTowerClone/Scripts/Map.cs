@@ -22,29 +22,30 @@ public class Map : MonoBehaviour
 
     public void SpawnNewBlock()
     {
+        // Instantiate new block, add to list, name it
         var newBlock = Instantiate(blockPrefabs.GetRandomElement(), transform);
         blocks.Add(newBlock);
         newBlock.gameObject.name = $"Block {blocks.Count}";
 
+        // Move it into the correct position
         Vector3 direction = (lastBlock.end.position - lastBlock.transform.position).normalized;
         newBlock.transform.position = lastBlock.transform.position + direction * 11;
 
-        
-        newBlock.root.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
 
+        // Orient new block ( via Nom - https://discord.com/channels/750329891383410728/983851080255418408/1088325758050648134 )
+        newBlock.root.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
         var forwardFrom = newBlock.toStart;
         var forwardTo = -lastBlock.toEnd;
-
         var rotation = Quaternion.FromToRotation(forwardFrom, forwardTo);
         newBlock.root.rotation *= rotation;
 
-        // orients in case it goes upside down
+        // Orients in case it goes upside down
         float dot = Vector3.Dot(newBlock.root.up, Vector3.up);
         if (dot <= 0)
         {
             newBlock.root.rotation *= Quaternion.AngleAxis(180, Vector3.forward);
         }
-        
+
         lastBlock = newBlock;
     }
 }
