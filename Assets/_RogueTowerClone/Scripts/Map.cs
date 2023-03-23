@@ -60,8 +60,7 @@ public class Map : MonoBehaviour
         lastBlock = newBlock;
         SpawnButtons();
     }
-
-    // ToDo: Check if expansion would intersect previous path
+    
     private void SpawnButtons()
     {
         // Remove old buttons
@@ -76,7 +75,15 @@ public class Map : MonoBehaviour
         {
             // Spawn new buttons
             Vector3 direction = (lastBlock.endPoints[i].position - lastBlock.transform.position).normalized;
+            var spawnPosition =  lastBlock.transform.position + direction * 11;
             var buttonPosition = lastBlock.transform.position + direction * 11 + new Vector3(0, 5, 0);
+
+            // Check if position would result in a collision with an existing block
+            var hits = Physics.RaycastAll(buttonPosition, Vector3.down, Single.PositiveInfinity);
+            if (hits.Any(hit => hit.collider.TryGetComponent(out Block _)))
+            {
+                continue;
+            }
 
             var newButton = Instantiate(buttonPrefab, canvas);
             spawnTileButtons.Add(newButton);
