@@ -27,6 +27,9 @@ public class Map : MonoBehaviour
         SpawnButtons();
     }
 
+    
+    // ToDo: Check if start intersects previous path and replace with a new EndBlock prefab
+    // ToDo: Create a new path List<Vector3> for mobs to traverse from each VALID endpoint
     public void SpawnNewBlock(int endPoint = 0)
     {
         // Instantiate new block, add to list, name it
@@ -58,6 +61,7 @@ public class Map : MonoBehaviour
         SpawnButtons();
     }
 
+    // ToDo: Check if expansion would intersect previous path
     private void SpawnButtons()
     {
         // Remove old buttons
