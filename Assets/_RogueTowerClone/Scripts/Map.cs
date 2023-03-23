@@ -1,17 +1,18 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Nomnom.RaycastVisualization;
-using Palmmedia.ReportGenerator.Core.Logging;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class Map : MonoBehaviour
 {
-    [SerializeField] private Block startingBlock;
-    [SerializeField] private Block deadEndBlock;
+    [FormerlySerializedAs("startingBlock")]
+    [SerializeField] private Block startingBlockPrefab;
+    [FormerlySerializedAs("deadEndBlock")]
+    [SerializeField] private Block deadEndBlockPrefab;
     [SerializeField] private List<Block> blockPrefabs = new List<Block>();
+    private List<Transform> spawnPoints = new List<Transform>();
 
     [Header("UI - Temporary")]
     [SerializeField] private Transform canvas;
@@ -23,16 +24,19 @@ public class Map : MonoBehaviour
 
     private void Start()
     {
-        blocks.Add(Instantiate(startingBlock, transform));
+        var startingBlock = Instantiate(startingBlockPrefab, transform);
+        blocks.Add(startingBlock);
         lastBlock = startingBlock;
+        spawnPoints.AddRange(startingBlock.endPoints);
         SpawnButtons();
     }
 
 
-    // ToDo: Check if start intersects previous path and replace with a new EndBlock prefab
     // ToDo: Create a new path List<Vector3> for mobs to traverse from each VALID endpoint
-    public void SpawnNewBlock(int endPoint = 0)
+    private void SpawnNewBlock(int endPoint = 0)
     {
+        spawnPoints.Remove(lastBlock.endPoints[endPoint]);
+
         // Instantiate new block, add to list, name it
         var newBlock = Instantiate(blockPrefabs.GetRandomElement(), transform);
         blocks.Add(newBlock);
@@ -42,6 +46,7 @@ public class Map : MonoBehaviour
         Vector3 direction = (lastBlock.endPoints[endPoint].position - lastBlock.transform.position).normalized;
         newBlock.transform.position = lastBlock.transform.position + direction * 11;
 
+        // ToDo: Refactor into method. DeadEndBlock will need to use it
         // Orient new block ( via Nom - https://discord.com/channels/750329891383410728/983851080255418408/1088325758050648134 )
         newBlock.transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
         var forwardFrom = newBlock.transform.TransformDirection(newBlock.start.localPosition);
@@ -56,40 +61,46 @@ public class Map : MonoBehaviour
             newBlock.transform.rotation *= Quaternion.AngleAxis(180, Vector3.forward);
         }
 
-
-        // Check for dead ends - BUGGED!! Always claims a dead end
+        // Check for dead ends
         foreach (Transform newBlockEndPoint in newBlock.endPoints)
         {
-            //RaycastHit[] hits = Physics.RaycastAll(raycastOrigin + Vector3.up, Vector3.down, 5);
             Collider[] hits = Physics.OverlapSphere(newBlockEndPoint.transform.position, 5);
-            Debug.Log($"Hits: {hits.Length}");
             foreach (Collider hit in hits)
             {
-                //Debug.Log($"Hit: {hit.gameObject.name}");
                 if (hit.TryGetComponent(out Block hitBlock))
                 {
-                    Debug.Log($"Hit block");
                     if (hitBlock == newBlock)
                     {
                         continue;
                     }
+
                     Debug.Log($"DeadEnd!");
 
                     var rot = newBlock.transform.rotation;
                     var pos = newBlock.transform.position;
-                    
-                    DestroyImmediate(newBlock);
-                    newBlock = Instantiate(deadEndBlock, transform);
+
+                    DestroyImmediate(newBlock.gameObject);
+                    newBlock = Instantiate(deadEndBlockPrefab, transform);
                     newBlock.transform.rotation = rot;
                     newBlock.transform.position = pos;
                     break;
                 }
             }
-
         }
+
+        // Add new end points
+        spawnPoints.AddRange(newBlock.endPoints);
 
         lastBlock = newBlock;
         SpawnButtons();
+    }
+
+    private void OnDrawGizmos()
+    {
+        foreach (Transform endPoint in spawnPoints)
+        {
+            Gizmos.DrawSphere(endPoint.transform.position, 2);
+        }
     }
 
     // ToDo: Keep a list of all valid End points, this only checks the last placed block
@@ -106,8 +117,10 @@ public class Map : MonoBehaviour
         for (int i = 0; i < lastBlock.endPoints.Count; i++)
         {
             // Spawn new buttons
+            Block parent = spawnPoints[0].GetComponentInParent<Block>();
+            Debug.Assert(parent != null);
+
             Vector3 direction = (lastBlock.endPoints[i].position - lastBlock.transform.position).normalized;
-            var spawnPosition = lastBlock.transform.position + direction * 11;
             var buttonPosition = lastBlock.transform.position + direction * 11 + new Vector3(0, 5, 0);
 
             // Check if position would result in a collision with an existing block
