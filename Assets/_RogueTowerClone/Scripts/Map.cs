@@ -25,31 +25,26 @@ public class Map : MonoBehaviour
         var newBlock = Instantiate(blockPrefabs.GetRandomElement(), transform);
         blocks.Add(newBlock);
         newBlock.gameObject.name = $"Block {blocks.Count}";
-        var newBlockEnd = newBlock.GetComponentsInChildren<PathPoint>().FirstOrDefault(point => point.IsEnd);
-        var lastBlockStart = lastBlock.GetComponentsInChildren<PathPoint>().FirstOrDefault(point => point.IsStart);
-        var lastBlockEnd = lastBlock.GetComponentsInChildren<PathPoint>().FirstOrDefault(point => point.IsEnd);
 
-        Debug.Assert(newBlockEnd != null);
-        Debug.Assert(lastBlockStart != null);
-        Debug.Assert(lastBlockEnd != null);
-
-        Vector3 direction = (lastBlockStart.transform.position - lastBlock.transform.position).normalized;
+        Vector3 direction = (lastBlock.end.position - lastBlock.transform.position).normalized;
         newBlock.transform.position = lastBlock.transform.position + direction * 11;
 
-        for (int i = 0; i < 3; i++)
+        
+        newBlock.root.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
+
+        var forwardFrom = newBlock.toStart;
+        var forwardTo = -lastBlock.toEnd;
+
+        var rotation = Quaternion.FromToRotation(forwardFrom, forwardTo);
+        newBlock.root.rotation *= rotation;
+
+        // orients in case it goes upside down
+        float dot = Vector3.Dot(newBlock.root.up, Vector3.up);
+        if (dot <= 0)
         {
-            direction = newBlockEnd.transform.position - newBlock.transform.position;
-            Debug.DrawRay(newBlockEnd.transform.position, direction, Color.red, 999);
-            if (VisualPhysics.SphereCast(newBlockEnd.transform.position, 3, direction * 2, out RaycastHit hit))
-            {
-                Debug.Log($"Hit: {hit.collider.gameObject.name}");
-                break;
-            }
-
-            newBlock.transform.rotation = Quaternion.Euler(0, 0, i * 90);
+            newBlock.root.rotation *= Quaternion.AngleAxis(180, Vector3.forward);
         }
-
-
+        
         lastBlock = newBlock;
     }
 }
