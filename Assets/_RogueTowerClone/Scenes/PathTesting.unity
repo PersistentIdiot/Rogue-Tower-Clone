@@ -153,6 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingBlock: {fileID: 2900679630665214308, guid: ece875871c74785449486b07e105b00f, type: 3}
+  deadEndBlock: {fileID: 0}
   blockPrefabs:
   - {fileID: 2900679630665214308, guid: 85cea598ecadcf743aa1504326885c8d, type: 3}
   - {fileID: 2900679630665214308, guid: 2b8145fa67e706a42b68acc1823f3bcd, type: 3}
@@ -880,4 +881,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc663fa4ed664ee4698ca59ac7988a38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sensitivity: 0.1
+  moveSensitivity: 0.1
+  zoomSensitivity: 5
+  yMin: 15
+  yMax: 200
