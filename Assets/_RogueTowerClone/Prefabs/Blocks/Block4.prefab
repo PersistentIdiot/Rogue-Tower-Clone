@@ -20514,9 +20514,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd33c7f40713f5a44b0602aa065ea985, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: {x: 11, y: 11}
-  tilePrefab: {fileID: 0}
-  path: []
+  root: {fileID: 7444028811355725040}
+  start: {fileID: 21478289322706949}
+  end: {fileID: 7765741596501546508}
 --- !u!1 &7627448045302470563
 GameObject:
   m_ObjectHideFlags: 0

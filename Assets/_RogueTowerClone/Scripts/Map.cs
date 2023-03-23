@@ -27,28 +27,22 @@ public class Map : MonoBehaviour
         newBlock.gameObject.name = $"Block {blocks.Count}";
         var newBlockEnd = newBlock.GetComponentsInChildren<PathPoint>().FirstOrDefault(point => point.IsEnd);
         var lastBlockStart = lastBlock.GetComponentsInChildren<PathPoint>().FirstOrDefault(point => point.IsStart);
-        var lastBlockEnd = lastBlock.GetComponentsInChildren<PathPoint>().FirstOrDefault(point => point.IsEnd);
 
         Debug.Assert(newBlockEnd != null);
         Debug.Assert(lastBlockStart != null);
-        Debug.Assert(lastBlockEnd != null);
 
         Vector3 direction = (lastBlockStart.transform.position - lastBlock.transform.position).normalized;
         newBlock.transform.position = lastBlock.transform.position + direction * 11;
+        newBlock.root = newBlock.transform;
 
-        for (int i = 0; i < 3; i++)
-        {
-            direction = newBlockEnd.transform.position - newBlock.transform.position;
-            Debug.DrawRay(newBlockEnd.transform.position, direction, Color.red, 999);
-            if (VisualPhysics.SphereCast(newBlockEnd.transform.position, 3, direction * 2, out RaycastHit hit))
-            {
-                Debug.Log($"Hit: {hit.collider.gameObject.name}");
-                break;
-            }
+        var _from = newBlock;
+        var _to = lastBlock;
 
-            newBlock.transform.rotation = Quaternion.Euler(0, 0, i * 90);
-        }
+        var forwardFrom = _from.toStart;
+        var forwardTo = -_to.toEnd;
 
+        var rotation = Quaternion.FromToRotation(forwardFrom, forwardTo);
+        _from.root.transform.rotation = rotation * _from.root.rotation;
 
         lastBlock = newBlock;
     }
