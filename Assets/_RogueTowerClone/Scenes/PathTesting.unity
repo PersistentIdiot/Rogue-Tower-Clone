@@ -152,8 +152,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc4552cca09d8a54e99aa964e67f4077, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingBlock: {fileID: 2900679630665214308, guid: ece875871c74785449486b07e105b00f, type: 3}
-  deadEndBlock: {fileID: 0}
+  startingBlockPrefab: {fileID: 2900679630665214308, guid: ece875871c74785449486b07e105b00f, type: 3}
+  deadEndBlockPrefab: {fileID: 2900679630665214308, guid: 2a3a32cfb28023c4e8222341d188ae86, type: 3}
   blockPrefabs:
   - {fileID: 2900679630665214308, guid: 85cea598ecadcf743aa1504326885c8d, type: 3}
   - {fileID: 2900679630665214308, guid: 2b8145fa67e706a42b68acc1823f3bcd, type: 3}
