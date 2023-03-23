@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Nomnom.RaycastVisualization;
+using Palmmedia.ReportGenerator.Core.Logging;
 using UnityEngine;
 
 public class Map : MonoBehaviour
@@ -15,36 +17,36 @@ public class Map : MonoBehaviour
     private void Start()
     {
         blocks.Add(Instantiate(startingBlock, transform));
-        lastBlock = blocks[0];
-        SpawnNewBlock(lastBlock);
-        SpawnNewBlock(lastBlock);
+        lastBlock = startingBlock;
     }
 
-    private void SpawnNewBlock(Block inputLastBlock)
+    public void SpawnNewBlock()
     {
-        Debug.Log($"{nameof(Map)}.{nameof(SpawnNewBlock)}() ");
         var newBlock = Instantiate(blockPrefabs.GetRandomElement(), transform);
         blocks.Add(newBlock);
         newBlock.gameObject.name = $"Block {blocks.Count}";
         var newBlockEnd = newBlock.GetComponentsInChildren<PathPoint>().FirstOrDefault(point => point.IsEnd);
-        var lastBlockStart = inputLastBlock.GetComponentsInChildren<PathPoint>().FirstOrDefault(point => point.IsStart);
+        var lastBlockStart = lastBlock.GetComponentsInChildren<PathPoint>().FirstOrDefault(point => point.IsStart);
+        var lastBlockEnd = lastBlock.GetComponentsInChildren<PathPoint>().FirstOrDefault(point => point.IsEnd);
 
         Debug.Assert(newBlockEnd != null);
         Debug.Assert(lastBlockStart != null);
+        Debug.Assert(lastBlockEnd != null);
 
-        Vector3 direction = (lastBlockStart.transform.position - inputLastBlock.transform.position).normalized;
-        newBlock.transform.position = blocks[0].transform.position + direction * 11;
-        
+        Vector3 direction = (lastBlockStart.transform.position - lastBlock.transform.position).normalized;
+        newBlock.transform.position = lastBlock.transform.position + direction * 11;
+
         for (int i = 0; i < 3; i++)
         {
-            newBlock.transform.rotation = Quaternion.Euler(0, 0, i * 90);
-            if (!Physics.SphereCast(newBlockEnd.transform.position, 1, newBlockEnd.transform.position - lastBlockStart.transform.position, out _, 3))
+            
+            direction = newBlockEnd.transform.position - newBlock.transform.position;
+            Debug.DrawRay(newBlockEnd.transform.position, direction, Color.red, 999);
+            if (VisualPhysics.SphereCast(newBlockEnd.transform.position, 2, direction, out RaycastHit hit))
             {
-                continue;
+                
+                break;
             }
-
-            Debug.Log($"{nameof(Map)}.{nameof(SpawnNewBlock)}() - Connected properly!");
-            break;
+            newBlock.transform.rotation = Quaternion.Euler(0, 0, i * 90);
         }
 
         lastBlock = newBlock;

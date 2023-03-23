@@ -13,7 +13,6 @@ public class Block : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        Debug.Log($"{nameof(Block)}.{nameof(OnDrawGizmosSelected)}()");
         PathPoint start = GetComponentsInChildren<PathPoint>().FirstOrDefault(point => point.IsStart);
         var current = start;
         Debug.Assert(current != null);
