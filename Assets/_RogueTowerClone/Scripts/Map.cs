@@ -38,16 +38,17 @@ public class Map : MonoBehaviour
 
         for (int i = 0; i < 3; i++)
         {
-            
             direction = newBlockEnd.transform.position - newBlock.transform.position;
             Debug.DrawRay(newBlockEnd.transform.position, direction, Color.red, 999);
-            if (VisualPhysics.SphereCast(newBlockEnd.transform.position, 2, direction, out RaycastHit hit))
+            if (VisualPhysics.SphereCast(newBlockEnd.transform.position, 3, direction * 2, out RaycastHit hit))
             {
-                
+                Debug.Log($"Hit: {hit.collider.gameObject.name}");
                 break;
             }
+
             newBlock.transform.rotation = Quaternion.Euler(0, 0, i * 90);
         }
+
 
         lastBlock = newBlock;
     }

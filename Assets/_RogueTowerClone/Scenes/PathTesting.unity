@@ -155,6 +155,7 @@ MonoBehaviour:
   startingBlock: {fileID: 7444028811355725043, guid: 318f885521ef19d4a85be9587d7b34a5, type: 3}
   blockPrefabs:
   - {fileID: 7444028811355725043, guid: f20b5aadc3b49604da8bc073d92fabf3, type: 3}
+  - {fileID: 7444028811355725043, guid: a1e83c79f2686874fb1c59f3dc7b585d, type: 3}
 --- !u!4 &326454119
 Transform:
   m_ObjectHideFlags: 0
