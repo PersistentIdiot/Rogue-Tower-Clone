@@ -35,7 +35,7 @@ public class Map : MonoBehaviour
             {
                 if (hit.TryGetComponent(out Block block) && block != spawnPointParent)
                 {
-                    Debug.Log($"Dead end!");
+                    // ToDo: Do something in case of dead end
                 }
             }
         }

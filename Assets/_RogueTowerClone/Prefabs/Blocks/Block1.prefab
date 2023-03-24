@@ -7349,7 +7349,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd33c7f40713f5a44b0602aa065ea985, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Start: {fileID: 5877157998347958754}
+  StartPoint: {fileID: 5877157998347958754}
   EndPoints:
   - {fileID: 5312462861263106608}
 --- !u!65 &-4206375592011934459

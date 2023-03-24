@@ -7688,7 +7688,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd33c7f40713f5a44b0602aa065ea985, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Start: {fileID: 6004256138722312312}
+  StartPoint: {fileID: 6004256138722312312}
   EndPoints:
   - {fileID: 2280872682848667421}
 --- !u!65 &5757790726733381652
