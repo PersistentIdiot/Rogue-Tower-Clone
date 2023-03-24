@@ -156,9 +156,6 @@ MonoBehaviour:
   startingBlockPrefab: {fileID: 2900679630665214308, guid: ece875871c74785449486b07e105b00f, type: 3}
   deadEndBlockPrefab: {fileID: 2900679630665214308, guid: 2a3a32cfb28023c4e8222341d188ae86, type: 3}
   blockPrefabs:
-  - {fileID: 2900679630665214308, guid: 85cea598ecadcf743aa1504326885c8d, type: 3}
-  - {fileID: 2900679630665214308, guid: 2b8145fa67e706a42b68acc1823f3bcd, type: 3}
-  - {fileID: 2900679630665214308, guid: 815c5557beed4b342bbb1e97318e178e, type: 3}
   - {fileID: 2900679630665214308, guid: 7695a359639b5d84ca470d83bb972901, type: 3}
   canvas: {fileID: 1579498249}
   buttonPrefab: {fileID: 5093235682418846621, guid: 3c0af5a5d98fc9140bdf78a383f03ff4, type: 3}

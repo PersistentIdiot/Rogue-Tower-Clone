@@ -45,7 +45,7 @@ public class Map : MonoBehaviour
     private void SpawnNewBlock(int spawnPoint)
     {
         // Get block this spawnPoint belongs to
-        Block parentBlock = SpawnPoints[spawnPoint].GetComponentInParent<Block>();
+        Block previousBlock = SpawnPoints[spawnPoint].GetComponentInParent<Block>();
 
         // Instantiate newBlock, add to list, name it
         var newBlock = Instantiate(blockPrefabs.GetRandomElement(), transform);
@@ -53,18 +53,19 @@ public class Map : MonoBehaviour
         newBlock.gameObject.name = $"Block {blocks.Count}";
 
         // Move newBlock into the correct position
-        Vector3 direction = (SpawnPoints[spawnPoint].transform.position - parentBlock.transform.position).normalized;
-        newBlock.transform.position = parentBlock.transform.position + direction * 11;
+        Vector3 direction = (SpawnPoints[spawnPoint].transform.position - previousBlock.transform.position).normalized;
+        newBlock.transform.position = previousBlock.transform.position + direction * 11;
 
         OrientNewBlock(newBlock, spawnPoint);
 
+        // Connect new block path to previous block
+        newBlock.StartPoint.NextPoint = SpawnPoints[spawnPoint];
+
+        // Remove old SpawnPoint, add new ones
         SpawnPoints.RemoveAt(spawnPoint);
-
-        // Add new end points
         SpawnPoints.AddRange(newBlock.EndPoints);
-        
-        CheckForDeadEnds();
 
+        CheckForDeadEnds();
         SpawnButtons();
     }
 
@@ -76,7 +77,7 @@ public class Map : MonoBehaviour
 
         // Calculate rotation
         newBlock.transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
-        var forwardFrom = newBlock.transform.TransformDirection(newBlock.Start.transform.localPosition);
+        var forwardFrom = newBlock.transform.TransformDirection(newBlock.StartPoint.transform.localPosition);
         var forwardTo = -parentBlock.transform.TransformDirection(SpawnPoints[spawnPoint].transform.localPosition);
         var rotation = Quaternion.FromToRotation(forwardFrom, forwardTo);
 
