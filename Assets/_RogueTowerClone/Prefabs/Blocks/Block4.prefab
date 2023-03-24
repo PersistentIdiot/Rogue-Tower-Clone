@@ -2344,6 +2344,7 @@ GameObject:
   - component: {fileID: 3863482774353374135}
   - component: {fileID: 5302736190339490049}
   - component: {fileID: 668027483451227192}
+  - component: {fileID: 2370758391009344944}
   m_Layer: 0
   m_Name: Ground (0,0)
   m_TagString: Untagged
@@ -2442,6 +2443,21 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2370758391009344944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1237817054011740142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3db33c601d40d5c4da9080f5d3a577bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NextPoint: {fileID: 2069042660348931068}
+  IsStart: 0
+  IsEnd: 0
 --- !u!1 &1319064930103075533
 GameObject:
   m_ObjectHideFlags: 0
@@ -7328,10 +7344,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd33c7f40713f5a44b0602aa065ea985, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Start: {fileID: 6763858874555412017}
+  Start: {fileID: 2069042660348931068}
   EndPoints:
-  - {fileID: 8980743271980626412}
-  - {fileID: 9165317172729007493}
+  - {fileID: 6958459025474883481}
+  - {fileID: 6670951221602090782}
 --- !u!65 &-8334518916099018158
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -17237,6 +17253,7 @@ GameObject:
   - component: {fileID: 7530454902965359782}
   - component: {fileID: 2689148086872122073}
   - component: {fileID: 1615920898098494833}
+  - component: {fileID: 6670951221602090782}
   m_Layer: 0
   m_Name: Ground (5,0)
   m_TagString: Untagged
@@ -17335,6 +17352,21 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6670951221602090782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6431161621361229509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3db33c601d40d5c4da9080f5d3a577bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NextPoint: {fileID: 2370758391009344944}
+  IsStart: 0
+  IsEnd: 1
 --- !u!1 &6455692130811280935
 GameObject:
   m_ObjectHideFlags: 0
@@ -22232,6 +22264,7 @@ GameObject:
   - component: {fileID: 4973799613328624850}
   - component: {fileID: 7316849893887367567}
   - component: {fileID: 2743082219082244530}
+  - component: {fileID: 2069042660348931068}
   m_Layer: 0
   m_Name: Ground (0,-5)
   m_TagString: Untagged
@@ -22330,6 +22363,21 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2069042660348931068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7981959072429648730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3db33c601d40d5c4da9080f5d3a577bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NextPoint: {fileID: 0}
+  IsStart: 1
+  IsEnd: 0
 --- !u!1 &7992993589773622608
 GameObject:
   m_ObjectHideFlags: 0
@@ -22898,6 +22946,7 @@ GameObject:
   - component: {fileID: 4869454280277107281}
   - component: {fileID: 494908926258463393}
   - component: {fileID: 303652610315423245}
+  - component: {fileID: 6958459025474883481}
   m_Layer: 0
   m_Name: Ground (-5,0)
   m_TagString: Untagged
@@ -22996,6 +23045,21 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6958459025474883481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8072184458575885169}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3db33c601d40d5c4da9080f5d3a577bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NextPoint: {fileID: 2370758391009344944}
+  IsStart: 0
+  IsEnd: 1
 --- !u!1 &8145041310151584747
 GameObject:
   m_ObjectHideFlags: 0

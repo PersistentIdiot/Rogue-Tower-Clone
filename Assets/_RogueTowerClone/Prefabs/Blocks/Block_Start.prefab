@@ -2455,6 +2455,7 @@ GameObject:
   - component: {fileID: 3863482774353374135}
   - component: {fileID: 5302736190339490049}
   - component: {fileID: 668027483451227192}
+  - component: {fileID: 3291867254148337034}
   m_Layer: 0
   m_Name: Ground (0,0)
   m_TagString: Untagged
@@ -2553,6 +2554,21 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3291867254148337034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1237817054011740142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3db33c601d40d5c4da9080f5d3a577bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NextPoint: {fileID: 0}
+  IsStart: 1
+  IsEnd: 0
 --- !u!1 &1319064930103075533
 GameObject:
   m_ObjectHideFlags: 0
@@ -7671,9 +7687,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd33c7f40713f5a44b0602aa065ea985, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Start: {fileID: 1246767049143003440}
+  Start: {fileID: 3291867254148337034}
   EndPoints:
-  - {fileID: 6763858874555412017}
+  - {fileID: 8540453969246427987}
 --- !u!65 &5757790726733381652
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -23129,6 +23145,7 @@ GameObject:
   - component: {fileID: 4973799613328624850}
   - component: {fileID: 7316849893887367567}
   - component: {fileID: 2743082219082244530}
+  - component: {fileID: 8540453969246427987}
   m_Layer: 0
   m_Name: Ground (0,-5)
   m_TagString: Untagged
@@ -23227,6 +23244,21 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8540453969246427987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7981959072429648730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3db33c601d40d5c4da9080f5d3a577bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NextPoint: {fileID: 3291867254148337034}
+  IsStart: 0
+  IsEnd: 1
 --- !u!1 &7992993589773622608
 GameObject:
   m_ObjectHideFlags: 0

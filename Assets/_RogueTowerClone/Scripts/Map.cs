@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class Map : MonoBehaviour
 {
-    public List<Transform> SpawnPoints = new List<Transform>();
+    public List<PathPoint> SpawnPoints = new List<PathPoint>();
     [SerializeField] private Block startingBlockPrefab;
     [SerializeField] private Block deadEndBlockPrefab;
     [SerializeField] private List<Block> blockPrefabs = new List<Block>();
@@ -25,26 +25,19 @@ public class Map : MonoBehaviour
         SpawnButtons();
     }
 
-    // Orient new block ( via Nom - https://discord.com/channels/750329891383410728/983851080255418408/1088325758050648134 )
-    private void OrientNewBlock(Block newBlock, int spawnPoint)
+    private void CheckForDeadEnds()
     {
-        // Get parent of spawnPoint
-        Block parentBlock = SpawnPoints[spawnPoint].GetComponentInParent<Block>();
-        
-        // Calculate rotation
-        newBlock.transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
-        var forwardFrom = newBlock.transform.TransformDirection(newBlock.Start.localPosition);
-        var forwardTo = -parentBlock.transform.TransformDirection(SpawnPoints[spawnPoint].localPosition);
-        var rotation = Quaternion.FromToRotation(forwardFrom, forwardTo);
-        
-        // Apply rotation
-        newBlock.transform.rotation *= rotation;
-
-        // Flips block in case it goes upside down
-        float dot = Vector3.Dot(newBlock.transform.up, Vector3.up);
-        if (dot <= 0)
+        foreach (PathPoint spawnPoint in SpawnPoints)
         {
-            newBlock.transform.rotation *= Quaternion.AngleAxis(180, Vector3.forward);
+            Block spawnPointParent = spawnPoint.GetComponentInParent<Block>();
+            var hits = Physics.OverlapSphere(spawnPoint.transform.position, 5);
+            foreach (Collider hit in hits)
+            {
+                if (hit.TryGetComponent(out Block block) && block != spawnPointParent)
+                {
+                    Debug.Log($"Dead end!");
+                }
+            }
         }
     }
 
@@ -60,7 +53,7 @@ public class Map : MonoBehaviour
         newBlock.gameObject.name = $"Block {blocks.Count}";
 
         // Move newBlock into the correct position
-        Vector3 direction = (SpawnPoints[spawnPoint].position - parentBlock.transform.position).normalized;
+        Vector3 direction = (SpawnPoints[spawnPoint].transform.position - parentBlock.transform.position).normalized;
         newBlock.transform.position = parentBlock.transform.position + direction * 11;
 
         OrientNewBlock(newBlock, spawnPoint);
@@ -69,15 +62,32 @@ public class Map : MonoBehaviour
 
         // Add new end points
         SpawnPoints.AddRange(newBlock.EndPoints);
+        
+        CheckForDeadEnds();
 
         SpawnButtons();
     }
 
-    private void OnDrawGizmos()
+    // Orient new block ( via Nom - https://discord.com/channels/750329891383410728/983851080255418408/1088325758050648134 )
+    private void OrientNewBlock(Block newBlock, int spawnPoint)
     {
-        foreach (Transform endPoint in SpawnPoints)
+        // Get parent of spawnPoint
+        Block parentBlock = SpawnPoints[spawnPoint].GetComponentInParent<Block>();
+
+        // Calculate rotation
+        newBlock.transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
+        var forwardFrom = newBlock.transform.TransformDirection(newBlock.Start.transform.localPosition);
+        var forwardTo = -parentBlock.transform.TransformDirection(SpawnPoints[spawnPoint].transform.localPosition);
+        var rotation = Quaternion.FromToRotation(forwardFrom, forwardTo);
+
+        // Apply rotation
+        newBlock.transform.rotation *= rotation;
+
+        // Flips block in case it goes upside down
+        float dot = Vector3.Dot(newBlock.transform.up, Vector3.up);
+        if (dot <= 0)
         {
-            Gizmos.DrawSphere(endPoint.transform.position, 2);
+            newBlock.transform.rotation *= Quaternion.AngleAxis(180, Vector3.forward);
         }
     }
 
@@ -95,7 +105,7 @@ public class Map : MonoBehaviour
         for (int i = 0; i < SpawnPoints.Count; i++)
         {
             Block parent = SpawnPoints[i].GetComponentInParent<Block>();
-            Vector3 direction = (SpawnPoints[i].position - parent.transform.position).normalized;
+            Vector3 direction = (SpawnPoints[i].transform.position - parent.transform.position).normalized;
             var buttonPosition = parent.transform.position + direction * 11 + new Vector3(0, 5, 0);
 
             // Check if position would result in a collision with an existing block
@@ -110,6 +120,14 @@ public class Map : MonoBehaviour
             newButton.transform.position = buttonPosition;
             int spawnPoint = i;
             newButton.onClick.AddListener(() => SpawnNewBlock(spawnPoint));
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        foreach (PathPoint endPoint in SpawnPoints)
+        {
+            Gizmos.DrawSphere(endPoint.transform.position, 2);
         }
     }
 }
