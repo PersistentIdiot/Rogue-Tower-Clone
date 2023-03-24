@@ -7214,8 +7214,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd33c7f40713f5a44b0602aa065ea985, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  start: {fileID: 2063578850054154752}
-  endPoints:
+  Start: {fileID: 2063578850054154752}
+  EndPoints:
   - {fileID: 6763858874555412017}
 --- !u!65 &1750803735716662164
 BoxCollider:

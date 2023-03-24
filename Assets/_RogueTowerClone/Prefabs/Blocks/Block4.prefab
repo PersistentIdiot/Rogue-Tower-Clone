@@ -7328,8 +7328,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd33c7f40713f5a44b0602aa065ea985, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  start: {fileID: 6763858874555412017}
-  endPoints:
+  Start: {fileID: 6763858874555412017}
+  EndPoints:
   - {fileID: 8980743271980626412}
   - {fileID: 9165317172729007493}
 --- !u!65 &-8334518916099018158

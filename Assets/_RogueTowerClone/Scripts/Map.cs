@@ -25,6 +25,29 @@ public class Map : MonoBehaviour
         SpawnButtons();
     }
 
+    // Orient new block ( via Nom - https://discord.com/channels/750329891383410728/983851080255418408/1088325758050648134 )
+    private void OrientNewBlock(Block newBlock, int spawnPoint)
+    {
+        // Get parent of spawnPoint
+        Block parentBlock = SpawnPoints[spawnPoint].GetComponentInParent<Block>();
+        
+        // Calculate rotation
+        newBlock.transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
+        var forwardFrom = newBlock.transform.TransformDirection(newBlock.Start.localPosition);
+        var forwardTo = -parentBlock.transform.TransformDirection(SpawnPoints[spawnPoint].localPosition);
+        var rotation = Quaternion.FromToRotation(forwardFrom, forwardTo);
+        
+        // Apply rotation
+        newBlock.transform.rotation *= rotation;
+
+        // Flips block in case it goes upside down
+        float dot = Vector3.Dot(newBlock.transform.up, Vector3.up);
+        if (dot <= 0)
+        {
+            newBlock.transform.rotation *= Quaternion.AngleAxis(180, Vector3.forward);
+        }
+    }
+
     // ToDo: Create a new path List<Vector3> for mobs to traverse from each VALID endpoint
     private void SpawnNewBlock(int spawnPoint)
     {
@@ -40,20 +63,7 @@ public class Map : MonoBehaviour
         Vector3 direction = (SpawnPoints[spawnPoint].position - parentBlock.transform.position).normalized;
         newBlock.transform.position = parentBlock.transform.position + direction * 11;
 
-        // ToDo: Refactor into method. DeadEndBlock will need to use it
-        // Orient new block ( via Nom - https://discord.com/channels/750329891383410728/983851080255418408/1088325758050648134 )
-        newBlock.transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
-        var forwardFrom = newBlock.transform.TransformDirection(newBlock.Start.localPosition);
-        var forwardTo = -parentBlock.transform.TransformDirection(SpawnPoints[spawnPoint].localPosition);
-        var rotation = Quaternion.FromToRotation(forwardFrom, forwardTo);
-        newBlock.transform.rotation *= rotation;
-
-        // Flips block in case it goes upside down
-        float dot = Vector3.Dot(newBlock.transform.up, Vector3.up);
-        if (dot <= 0)
-        {
-            newBlock.transform.rotation *= Quaternion.AngleAxis(180, Vector3.forward);
-        }
+        OrientNewBlock(newBlock, spawnPoint);
 
         SpawnPoints.RemoveAt(spawnPoint);
 
