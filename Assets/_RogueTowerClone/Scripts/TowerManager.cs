@@ -8,6 +8,7 @@ public class TowerManager : MonoBehaviour
 {
     [SerializeField] private GameObject cursorPrefab;
     [SerializeField] private Tower towerPrefab;
+    [SerializeField] private float heightOffset;
     private GameObject cursor;
     private bool placingTower = false;
 
@@ -29,12 +30,14 @@ public class TowerManager : MonoBehaviour
             var hits = Physics.RaycastAll(rayOrigin);
             bool validHit = false;
             Vector3 hitPoint = Vector3.zero;
+            BoxCollider hitCollider = null;
             foreach (RaycastHit hit in hits)
             {
                 if (hit.collider.TryGetComponent(out Tile tile) && tile.TileType == TileTypes.Grass)
                 {
                     validHit = true;
                     hitPoint = hit.point;
+                    hitCollider = (BoxCollider)hit.collider;
                 }
             }
 

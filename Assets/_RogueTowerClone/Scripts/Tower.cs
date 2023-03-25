@@ -11,6 +11,7 @@ public class Tower : MonoBehaviour
     [SerializeField] private GimbalController gimbalController;
 
     private List<Enemy> enemiesInRange = new List<Enemy>();
+    private Enemy closestEnemy;
 
     // Start is called before the first frame update
     void Start()
@@ -20,11 +21,12 @@ public class Tower : MonoBehaviour
 
     private void Update()
     {
-        for (int i = enemiesInRange.Where(enemy => enemy == null).Count() - 1; i >= 0; i--)
+        for (int i = enemiesInRange.Count(enemy => enemy == null) - 1; i >= 0; i--)
         {
             enemiesInRange.RemoveAt(i);
         }
-        var closestEnemy = enemiesInRange.OrderBy(enemy => Vector3.Distance(transform.position, enemy.transform.position)).FirstOrDefault();
+
+        closestEnemy = enemiesInRange.OrderBy(enemy => Vector3.Distance(transform.position, enemy.transform.position)).FirstOrDefault();
         if (closestEnemy != null)
         {
             gimbalController.TrackPosition(closestEnemy.transform.position, out _, false);
