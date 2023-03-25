@@ -7,7 +7,7 @@ using UnityEngine;
 public class TowerManager : MonoBehaviour
 {
     [SerializeField] private GameObject cursorPrefab;
-    [SerializeField] private Vector3 cursorOffset = Vector3.up;
+    [SerializeField] private Tower towerPrefab;
     private GameObject cursor;
     private bool placingTower = false;
 
@@ -45,6 +45,12 @@ public class TowerManager : MonoBehaviour
                 cursorPosition.x = (float)Math.Round(hitPoint.x);
                 cursorPosition.z = (float)Math.Round(hitPoint.z);
                 cursor.transform.position = cursorPosition;
+
+                if (Input.GetMouseButtonDown(0))
+                {
+                    var tower = Instantiate(towerPrefab);
+                    tower.transform.position = cursorPosition;
+                }
             }
         }
         else

@@ -458,7 +458,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cursorPrefab: {fileID: 1133476880463574073, guid: ed88a03c114deda4e840c1c91e00fed4, type: 3}
-  cursorOffset: {x: 0, y: 1, z: 0}
+  towerPrefab: {fileID: 7844848739321631221, guid: 67b74c9a9e1a8344fb18eb0815c3f418, type: 3}
 --- !u!4 &1684772492
 Transform:
   m_ObjectHideFlags: 0
