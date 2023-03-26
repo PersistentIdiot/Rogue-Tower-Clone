@@ -33,7 +33,7 @@ public class TowerManager : MonoBehaviour
             BoxCollider hitCollider = null;
             foreach (RaycastHit hit in hits)
             {
-                if (hit.collider.TryGetComponent(out Tile tile) && tile.TileType == TileTypes.Grass)
+                if (hit.collider.TryGetComponent(out Tile tile) && tile.TileType == TileTypes.Grass && Vector3.Dot(Vector3.up, hit.normal) > 0.95f)
                 {
                     validHit = true;
                     hitPoint = hit.point;
