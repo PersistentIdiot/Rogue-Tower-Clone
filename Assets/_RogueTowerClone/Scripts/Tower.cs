@@ -6,12 +6,17 @@ using UnityEngine;
 
 public class Tower : MonoBehaviour
 {
+    [Header("Settings")]
     [SerializeField] private float towerRange = 5;
+    
+    [Header("References")]
     [SerializeField] private SphereCollider targetingCollider;
     [SerializeField] private GimbalController gimbalController;
+    [SerializeField] private TowerTargetSelector targetSelector;
+    [SerializeField] private ProjectileLauncher projectileLauncher;
 
-    private List<Enemy> enemiesInRange = new List<Enemy>();
-    private Enemy closestEnemy;
+    
+    private Enemy targetEnemy;
 
     // Start is called before the first frame update
     void Start()
@@ -21,43 +26,12 @@ public class Tower : MonoBehaviour
 
     private void Update()
     {
-        
-        // Remove null entries
-        enemiesInRange.RemoveAll(enemy => enemy == null);
-        /*
-        for (int i = enemiesInRange.Count(enemy => enemy == null) - 1; i >= 0; i--)
+        targetEnemy = targetSelector.GetClosestEnemy();
+        if (targetEnemy != null)
         {
-            enemiesInRange.RemoveAt(i);
-        }
-        */
-
-        // Order by distance
-        closestEnemy = enemiesInRange.OrderBy(enemy => Vector3.Distance(transform.position, enemy.transform.position)).FirstOrDefault();
-        if (closestEnemy != null)
-        {
-            gimbalController.TrackPosition(closestEnemy.transform.position, out _, false);
+            gimbalController.TrackPosition(targetEnemy.transform.position, out float _, false);
+            projectileLauncher.TryFire(targetEnemy);
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.TryGetComponent(out Enemy enemy))
-        {
-            if (!enemiesInRange.Contains(enemy))
-            {
-                enemiesInRange.Add(enemy);
-            }
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.TryGetComponent(out Enemy enemy))
-        {
-            if (enemiesInRange.Contains(enemy))
-            {
-                enemiesInRange.Remove(enemy);
-            }
-        }
-    }
 }

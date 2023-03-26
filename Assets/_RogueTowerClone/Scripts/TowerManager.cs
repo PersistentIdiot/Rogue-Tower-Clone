@@ -37,7 +37,6 @@ public class TowerManager : MonoBehaviour
                 {
                     validHit = true;
                     hitPoint = hit.point;
-                    hitCollider = (BoxCollider)hit.collider;
                 }
             }
 

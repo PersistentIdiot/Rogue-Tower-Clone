@@ -7,6 +7,7 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 1;
     [SerializeField] private float pointDistance = 0.1f;
+    public GameObject Model;
     public PathPoint CurrentPoint;
 
     private void Update()
