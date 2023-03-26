@@ -21,11 +21,17 @@ public class Tower : MonoBehaviour
 
     private void Update()
     {
+        
+        // Remove null entries
+        enemiesInRange.RemoveAll(enemy => enemy == null);
+        /*
         for (int i = enemiesInRange.Count(enemy => enemy == null) - 1; i >= 0; i--)
         {
             enemiesInRange.RemoveAt(i);
         }
+        */
 
+        // Order by distance
         closestEnemy = enemiesInRange.OrderBy(enemy => Vector3.Distance(transform.position, enemy.transform.position)).FirstOrDefault();
         if (closestEnemy != null)
         {
