@@ -27,13 +27,15 @@ public class TowerManager : MonoBehaviour
         if (placingTower)
         {
             Ray rayOrigin = Camera.main.ScreenPointToRay(Input.mousePosition);
-            var hits = Physics.RaycastAll(rayOrigin);
+            LayerMask mask = LayerMask.GetMask("Grass");
+            var hits = Physics.RaycastAll(rayOrigin, Single.PositiveInfinity, mask);
+
             bool validHit = false;
             Vector3 hitPoint = Vector3.zero;
-            BoxCollider hitCollider = null;
+
             foreach (RaycastHit hit in hits)
             {
-                if (hit.collider.TryGetComponent(out Tile tile) && tile.TileType == TileTypes.Grass && Vector3.Dot(Vector3.up, hit.normal) > 0.95f)
+                if (Vector3.Dot(Vector3.up, hit.normal) > 0.95f)
                 {
                     validHit = true;
                     hitPoint = hit.point;
